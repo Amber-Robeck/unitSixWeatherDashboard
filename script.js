@@ -11,14 +11,14 @@ var button = document.getElementById("button-addon2")
 var cityName = document.getElementById("city-name")
 var lon = "";
 var lat = "";
+var userWrite = "";
 
+button.addEventListener("click", function () {
+    userWrite = userInput.value
+    getApiData();
+})
 
-button.addEventListener("click", function (event) {
-    // event.preventDefault();
-    // event.stopPropagation();
-    var userWrite = userInput.value
-    console.log("working")
-    console.log(userWrite)
+function getApiData() {
 
     fetch(
         'http://api.openweathermap.org/data/2.5/forecast?q=' + userWrite + '&units=imperial&appid=' + apiKey
@@ -36,25 +36,32 @@ button.addEventListener("click", function (event) {
             currentTemp.textContent = "Temp " + data.list[0].main.temp;
             currentWind.textContent = "Wind " + data.list[0].wind.speed + " MPH";
             currentHumidity.textContent = "Humidity " + data.list[0].main.humidity + "%";
-            currentUv.textContent = "UV index " + data.list[0].main.temp;
             cityName.textContent = data.city.name;
-            var lon = data.city.coord.lon;
-            var lat = data.city.coord.lat;
+            lon = data.city.coord.lon;
+            lat = data.city.coord.lat;
             console.log(lon)
             console.log(lat)
+            getUvindex();
         })
-        .then(getUvindex)
+    //         .then(getUvindex)
 
-})
-var uvUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon + '&appid=' + apiKey"
-console.log(uvUrl)
+}
+
+// console.log(lon)
+// console.log(lat)
+// var uvUrl = https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon + '&appid=' + apiKey"
+// console.log(uvUrl)
 function getUvindex() {
-    fetch(uvUrl)
+    // console.log(lat)
+    // console.log(lon)
+    // console.log(typeof lat)
+    fetch('https://api.openweathermap.org/data/2.5/onecall?lat=' + (lat) + '&lon=' + (lon) + '&appid=' + apiKey)
         .then(function (response) {
             return response.json();
         })
         .then(function (data) {
-            console.log(data);
+            // console.log(data.current.uvi);
+            currentUv.textContent = "UV index " + data.current.uvi;
         })
 }
 
