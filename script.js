@@ -7,12 +7,19 @@ var currentTemp = document.getElementById("temp")
 var currentWind = document.getElementById("wind")
 var currentHumidity = document.getElementById("humidity")
 var currentUv = document.getElementById("uv")
-var button = document.getElementById("submit")
+var button = document.getElementById("button-addon2")
+var cityName = document.getElementById("city-name")
+var lon = "";
+var lat = "";
 
-button = addEventListener("click", function () {
+
+button.addEventListener("click", function (event) {
+    // event.preventDefault();
+    // event.stopPropagation();
     var userWrite = userInput.value
-    // console.log("working")
-    // console.log(userWrite)
+    console.log("working")
+    console.log(userWrite)
+
     fetch(
         'http://api.openweathermap.org/data/2.5/forecast?q=' + userWrite + '&units=imperial&appid=' + apiKey
     )
@@ -20,13 +27,54 @@ button = addEventListener("click", function () {
             return response.json();
         })
         .then(function (data) {
+            console.log(data.city.coord);
 
-            console.log(data.list[0].main.temp)
-            console.log(data.list[0].wind.speed)
-            console.log(data.list[0].main.humidity)
-            console.log(data.city.name)
+            console.log(data.list[0].main.temp);
+            console.log(data.list[0].wind.speed);
+            console.log(data.list[0].main.humidity);
+            console.log(data.city.name);
+            currentTemp.textContent = "Temp " + data.list[0].main.temp;
+            currentWind.textContent = "Wind " + data.list[0].wind.speed + " MPH";
+            currentHumidity.textContent = "Humidity " + data.list[0].main.humidity + "%";
+            currentUv.textContent = "UV index " + data.list[0].main.temp;
+            cityName.textContent = data.city.name;
+            var lon = data.city.coord.lon;
+            var lat = data.city.coord.lat;
+            console.log(lon)
+            console.log(lat)
         })
+        .then(getUvindex)
+
 })
+var uvUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon + '&appid=' + apiKey"
+console.log(uvUrl)
+function getUvindex() {
+    fetch(uvUrl)
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+            console.log(data);
+        })
+}
+
+//     return (fetch('https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon + apiKey))
+// })
+//     .then(function (response) {
+//         return response.json();
+//     })
+//     .then(function (data) {
+//         console.log(data);
+//     })
+// https://api.openweathermap.org/data/2.5/onecall?lat=33.44&lon=-94.04&exclude=hourly,daily&appid={API key}
+// fetch('https://api.openweathermap.org/data/2.5/onecall?lat=' + (data.city.coord.Lat) + '&lon='(data.city.coord.Lon) + apiKey)
+//     .then(function (response) {
+//         return response.json();
+//     })
+//     .then(function (data) {
+//         console.log(data)
+//     })
+
 
 // fetch(requestUrl)
 //     .then(function (response) {
