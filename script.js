@@ -9,15 +9,18 @@ var currentHumidity = document.getElementById("humidity")
 var currentUv = document.getElementById("uv")
 var button = document.getElementById("button-addon2")
 var cityName = document.getElementById("city-name")
+var weatherDesc = document.getElementById("description")
 var lon = "";
 var lat = "";
 var userWrite = "";
-
+var weatherIcon = document.getElementById("icon")
 button.addEventListener("click", function () {
     userWrite = userInput.value
     getApiData();
 })
 
+
+//this function gets forcast api with userWrite, grabs data and writes it to user side
 function getApiData() {
 
     fetch(
@@ -27,30 +30,30 @@ function getApiData() {
             return response.json();
         })
         .then(function (data) {
-            console.log(data.city.coord);
-
-            console.log(data.list[0].main.temp);
-            console.log(data.list[0].wind.speed);
-            console.log(data.list[0].main.humidity);
-            console.log(data.city.name);
+            console.log(data);
+            //Adding data inputs to corresponding html tags
+            //would like to get rid of decimals if time allows from temp and wind speed, possibly add min/max to both
             currentTemp.textContent = "Temp " + data.list[0].main.temp;
             currentWind.textContent = "Wind " + data.list[0].wind.speed + " MPH";
             currentHumidity.textContent = "Humidity " + data.list[0].main.humidity + "%";
             cityName.textContent = data.city.name;
             lon = data.city.coord.lon;
             lat = data.city.coord.lat;
-            console.log(lon)
-            console.log(lat)
+            //adding weather description and icons to the card
+            weatherDesc.textContent = data.list[0].weather[0].description;
+            var iconCode = data.list[0].weather[0].icon
+            var iconURL = "http://openweathermap.org/img/w/" + iconCode + ".png";
+            weatherIcon.src = iconURL;
             getUvindex();
         })
-    //         .then(getUvindex)
-
 }
 
 // console.log(lon)
 // console.log(lat)
 // var uvUrl = https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon + '&appid=' + apiKey"
 // console.log(uvUrl)
+
+//This function is fetching onecall api to grap the uv index and write it to user side
 function getUvindex() {
     // console.log(lat)
     // console.log(lon)
@@ -60,7 +63,7 @@ function getUvindex() {
             return response.json();
         })
         .then(function (data) {
-            // console.log(data.current.uvi);
+            console.log(data);
             currentUv.textContent = "UV index " + data.current.uvi;
         })
 }
