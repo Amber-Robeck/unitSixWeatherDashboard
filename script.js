@@ -24,7 +24,7 @@ button.addEventListener("click", function () {
 function getApiData() {
 
     fetch(
-        'http://api.openweathermap.org/data/2.5/forecast?q=' + userWrite + '&units=imperial&appid=' + apiKey
+        'https://api.openweathermap.org/data/2.5/forecast?q=' + userWrite + '&units=imperial&appid=' + apiKey
     )
         .then(function (response) {
             return response.json();
