@@ -42,7 +42,7 @@ function getApiData() {
             //adding weather description and icons to the card
             weatherDesc.textContent = data.list[0].weather[0].description;
             var iconCode = data.list[0].weather[0].icon
-            var iconURL = "http://openweathermap.org/img/w/" + iconCode + ".png";
+            var iconURL = "https://openweathermap.org/img/w/" + iconCode + ".png";
             weatherIcon.src = iconURL;
             getUvindex();
         })
