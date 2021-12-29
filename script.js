@@ -44,14 +44,21 @@ if (citySearch) {
 }//end of local storage check and write
 
 //search button userinput saved to local storage in citySearch array
+//if citySearch is >= 5 remove first item from array(oldest one) remove last list item
 button.addEventListener("click", function () {
     userWrite = userInput.value
-    citySearch.push(userWrite)
+    if (citySearch.length >= 5) {
+        citySearch.shift()
+        citySearch.push(userWrite)
+        historyList.removeChild(historyList.childNodes[4]);
+    }
+    else {
+        citySearch.push(userWrite)
+    }
     localStorage.setItem("Search", JSON.stringify(citySearch));
 
 
     getApiData();
-    writeList();
 })//end of click writer
 
 //creating and writing list elements to page    
@@ -61,11 +68,14 @@ function writeList() {
     for (var i = 0; i < citySearch.length; i++) {
         var history = citySearch[i];
         console.log(history)
-
     }
+    // if (citySearch >= 5) {
+    // historyList.removeChild(historyList.lastChild);
+    //     historyList.removeChild(historyList.childNodes[0]);
+    // } else {
     var li = document.createElement("li");
     // li.insertBefore(li, li.firstChild)
-
+    // }
     li.textContent = history;
     // li.setAttribute("data-index", i);
     historyList.prepend(li);
@@ -97,6 +107,7 @@ function getApiData() {
             weatherIcon.src = iconURL;
             getUvindex();
         })
+    writeList();
 }//end of getApiData function
 
 // console.log(lon)
