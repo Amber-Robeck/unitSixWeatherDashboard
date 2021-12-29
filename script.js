@@ -1,5 +1,5 @@
 // http://api.openweathermap.org/data/2.5/forecast?id=524901&appid={API key}
-var requestUrl = 'http://api.openweathermap.org/data/2.5/forecast?id=(userWrite)&appid=fb5b180c997df287e25a155dffd48b42';
+// var requestUrl = 'http://api.openweathermap.org/data/2.5/forecast?id=(userWrite)&appid=fb5b180c997df287e25a155dffd48b42';
 var apiKey = "fb5b180c997df287e25a155dffd48b42"
 var userInput = document.getElementById("userInput")
 console.log(userInput.value)
@@ -23,7 +23,10 @@ var weatherIcon = document.getElementById("icon")
 //TODO: display search history in reverse order, maybe max number of searches then delete
 //TODO: Change list elements to buttons to click and bring data back up
 
+
+//put this in a function?
 // checking local storage and then writing on page
+// changed append to prepend to add last item first
 var citySearch = JSON.parse(localStorage.getItem("Search"))
 if (citySearch) {
     // writeList();
@@ -34,11 +37,11 @@ if (citySearch) {
         console.log(citySearch)
         var li = document.createElement("li");
         li.textContent = savedHistory;
-        historyList.appendChild(li);
+        historyList.prepend(li);
     }
 } else {
     var citySearch = [];
-}
+}//end of local storage check and write
 
 //search button userinput saved to local storage in citySearch array
 button.addEventListener("click", function () {
@@ -49,9 +52,11 @@ button.addEventListener("click", function () {
 
     getApiData();
     writeList();
-})
+})//end of click writer
 
 //creating and writing list elements to page    
+//reverse method is reversing order of listed items so most recent is first
+//changed appendChild to prepend to add most recent history first
 function writeList() {
     for (var i = 0; i < citySearch.length; i++) {
         var history = citySearch[i];
@@ -59,10 +64,12 @@ function writeList() {
 
     }
     var li = document.createElement("li");
+    // li.insertBefore(li, li.firstChild)
+
     li.textContent = history;
     // li.setAttribute("data-index", i);
-    historyList.appendChild(li);
-}
+    historyList.prepend(li);
+}//end of writeList function
 
 //this function gets forcast api with userWrite, grabs data and writes it to user side
 function getApiData() {
@@ -90,7 +97,7 @@ function getApiData() {
             weatherIcon.src = iconURL;
             getUvindex();
         })
-}
+}//end of getApiData function
 
 // console.log(lon)
 // console.log(lat)
@@ -110,7 +117,14 @@ function getUvindex() {
             console.log(data);
             currentUv.textContent = "UV index " + data.current.uvi;
         })
-}
+}//end of getUvindex function
+
+
+
+
+
+////learning experiments
+
 
 //     return (fetch('https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon + apiKey))
 // })
