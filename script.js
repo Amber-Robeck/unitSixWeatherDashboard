@@ -1,8 +1,5 @@
-// http://api.openweathermap.org/data/2.5/forecast?id=524901&appid={API key}
-// var requestUrl = 'http://api.openweathermap.org/data/2.5/forecast?id=(userWrite)&appid=fb5b180c997df287e25a155dffd48b42';
 var apiKey = "fb5b180c997df287e25a155dffd48b42"
 var userInput = document.getElementById("userInput")
-console.log(userInput.value)
 var currentTemp = document.getElementById("temp")
 var currentWind = document.getElementById("wind")
 var currentHumidity = document.getElementById("humidity")
@@ -20,13 +17,14 @@ var weatherIcon = document.getElementById("icon")
 
 
 //TODO: find a way to only save one of each city even when multiple are displayed
-//TODO: display search history in reverse order, maybe max number of searches then delete
 //TODO: Change list elements to buttons to click and bring data back up
+//TODO: maybe save api data into array so when click on buttons it brings up last data, also on page reload bring up last searched city
+//TODO: clear or delete button
+//TODO: 5 day forcast
 
 
 //put this in a function?
 // checking local storage and then writing on page
-// changed append to prepend to add last item first
 var citySearch = JSON.parse(localStorage.getItem("Search"))
 if (citySearch) {
     // writeList();
@@ -62,22 +60,14 @@ button.addEventListener("click", function () {
 })//end of click writer
 
 //creating and writing list elements to page    
-//reverse method is reversing order of listed items so most recent is first
 //changed appendChild to prepend to add most recent history first
 function writeList() {
     for (var i = 0; i < citySearch.length; i++) {
         var history = citySearch[i];
         console.log(history)
     }
-    // if (citySearch >= 5) {
-    // historyList.removeChild(historyList.lastChild);
-    //     historyList.removeChild(historyList.childNodes[0]);
-    // } else {
     var li = document.createElement("li");
-    // li.insertBefore(li, li.firstChild)
-    // }
     li.textContent = history;
-    // li.setAttribute("data-index", i);
     historyList.prepend(li);
 }//end of writeList function
 
@@ -110,16 +100,10 @@ function getApiData() {
     writeList();
 }//end of getApiData function
 
-// console.log(lon)
-// console.log(lat)
-// var uvUrl = https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon + '&appid=' + apiKey"
-// console.log(uvUrl)
 
 //This function is fetching onecall api to grap the uv index and write it to user side
 function getUvindex() {
-    // console.log(lat)
-    // console.log(lon)
-    // console.log(typeof lat)
+
     fetch('https://api.openweathermap.org/data/2.5/onecall?lat=' + (lat) + '&lon=' + (lon) + '&appid=' + apiKey)
         .then(function (response) {
             return response.json();
@@ -129,75 +113,4 @@ function getUvindex() {
             currentUv.textContent = "UV index " + data.current.uvi;
         })
 }//end of getUvindex function
-
-
-
-
-
-////learning experiments
-
-
-//     return (fetch('https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon + apiKey))
-// })
-//     .then(function (response) {
-//         return response.json();
-//     })
-//     .then(function (data) {
-//         console.log(data);
-//     })
-// https://api.openweathermap.org/data/2.5/onecall?lat=33.44&lon=-94.04&exclude=hourly,daily&appid={API key}
-// fetch('https://api.openweathermap.org/data/2.5/onecall?lat=' + (data.city.coord.Lat) + '&lon='(data.city.coord.Lon) + apiKey)
-//     .then(function (response) {
-//         return response.json();
-//     })
-//     .then(function (data) {
-//         console.log(data)
-//     })
-
-
-// fetch(requestUrl)
-//     .then(function (response) {
-//         return response.json();
-//     })
-//     .then(function (data) {
-//         console.log(data)
-//     })
-
-
-// // http://api.openweathermap.org/data/2.5/forecast?id=524901&appid={API key}
-// var requestUrl = 'http://api.openweathermap.org/data/2.5/forecast?id=(userWrite)&appid=fb5b180c997df287e25a155dffd48b42';
-// var apiKey = "fb5b180c997df287e25a155dffd48b42"
-// var userInput = document.getElementById("userInput")
-// console.log(userInput.value)
-
-// var submitButton = document.getElementById("submit")
-
-// submitButton.addEventListener("click", function () {
-//     var userWrite = userInput.value
-//     getData();
-// })
-
-// // console.log("working")
-// console.log(userWrite)
-
-// function getData() {
-
-//     fetch(
-//         'http://api.openweathermap.org/data/2.5/forecast?q=' + userWrite + '&units=imperial&appid=' + apiKey
-//     )
-//         .then(function (response) {
-//             return response.json();
-//         })
-//         .then(function (data) {
-//             console.log(data)
-//         })
-// }
-
-// // fetch(requestUrl)
-// //     .then(function (response) {
-// //         return response.json();
-// //     })
-// //     .then(function (data) {
-// //         console.log(data)
-// //     })
-// // submitButton.addEventListener("click", getData);
+;
