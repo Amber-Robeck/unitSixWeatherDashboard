@@ -10,15 +10,47 @@ var currentUv = document.getElementById("uv")
 var button = document.getElementById("button-addon2")
 var cityName = document.getElementById("city-name")
 var weatherDesc = document.getElementById("description")
+var historyList = document.getElementById("history")
 var lon = "";
 var lat = "";
+var citySearch = [];
 var userWrite = "";
 var weatherIcon = document.getElementById("icon")
+
+
+// checking local storage and then writing on page
+//currently only displaying last saved
+if (JSON.parse(localStorage.getItem("Search"))) {
+    var citySearch = JSON.parse(localStorage.getItem("Search"))
+    writeList();
+
+} else {
+    var citySearch = [];
+}
+
+//search button userinput saved to local storage in citySearch array
 button.addEventListener("click", function () {
     userWrite = userInput.value
+    citySearch.push(userWrite)
+    localStorage.setItem("Search", JSON.stringify(citySearch));
+
+
     getApiData();
+    writeList();
 })
 
+//creating and writing list elements to page    
+function writeList() {
+    for (var i = 0; i < citySearch.length; i++) {
+        var history = citySearch[i];
+        console.log(history)
+
+    }
+    var li = document.createElement("li");
+    li.textContent = history;
+    // li.setAttribute("data-index", i);
+    historyList.appendChild(li);
+}
 
 //this function gets forcast api with userWrite, grabs data and writes it to user side
 function getApiData() {
