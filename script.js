@@ -18,12 +18,24 @@ var userWrite = "";
 var weatherIcon = document.getElementById("icon")
 
 
-// checking local storage and then writing on page
-//currently only displaying last saved
-if (JSON.parse(localStorage.getItem("Search"))) {
-    var citySearch = JSON.parse(localStorage.getItem("Search"))
-    writeList();
 
+//TODO: find a way to only save one of each city even when multiple are displayed
+//TODO: display search history in reverse order, maybe max number of searches then delete
+//TODO: Change list elements to buttons to click and bring data back up
+
+// checking local storage and then writing on page
+var citySearch = JSON.parse(localStorage.getItem("Search"))
+if (citySearch) {
+    // writeList();
+    for (var i = 0; i < citySearch.length; i++) {
+        var savedHistory = citySearch[i];
+        console.log(savedHistory)
+        console.log(typeof savedHistory)
+        console.log(citySearch)
+        var li = document.createElement("li");
+        li.textContent = savedHistory;
+        historyList.appendChild(li);
+    }
 } else {
     var citySearch = [];
 }
