@@ -104,13 +104,16 @@ function getApiData() {
 //This function is fetching onecall api to grap the uv index and write it to user side
 function getUvindex() {
 
-    fetch('https://api.openweathermap.org/data/2.5/onecall?lat=' + (lat) + '&lon=' + (lon) + '&appid=' + apiKey)
+    fetch('https://api.openweathermap.org/data/2.5/onecall?lat=' + (lat) + '&lon=' + (lon) + '&exclude=minutely,hourly&units=imperial&appid=' + apiKey)
         .then(function (response) {
             return response.json();
         })
         .then(function (data) {
-            console.log(data);
             currentUv.textContent = "UV index " + data.current.uvi;
+            for (var i = 1; i < 6; i++) {
+                console.log(data.daily[i].temp.min)
+                console.log(data.daily[i].temp.max)
+            }
         })
 }//end of getUvindex function
 ;
