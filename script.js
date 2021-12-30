@@ -102,6 +102,11 @@ function getApiData() {
 
 
 //This function is fetching onecall api to grap the uv index and write it to user side
+// var cardOne = document.getElementById("day-one")
+// var maxTemp = document.getElementById("max-temp")
+// var minTemp = document.getElementById("min-temp")
+
+
 function getUvindex() {
 
     fetch('https://api.openweathermap.org/data/2.5/onecall?lat=' + (lat) + '&lon=' + (lon) + '&exclude=minutely,hourly&units=imperial&appid=' + apiKey)
@@ -109,11 +114,75 @@ function getUvindex() {
             return response.json();
         })
         .then(function (data) {
+            console.log(data);
             currentUv.textContent = "UV index " + data.current.uvi;
             for (var i = 1; i < 6; i++) {
+                var newDay = new Date(data.daily[i].dt * 1000);
+                newDay = newDay.toLocaleDateString("en-US");
+                console.log(newDay)
                 console.log(data.daily[i].temp.min)
                 console.log(data.daily[i].temp.max)
+
+                var fiveDay = document.getElementById("five-day")
+                //writing index date
+                var forDay = document.createElement('p')
+                forDay.textContent = newDay;
+                //writing index max temp
+                var maxTemp = document.createElement('p')
+                maxTemp.textContent = "Temperature high: " + data.daily[i].temp.max;
+                //writing index min temp
+                var minTemp = document.createElement('p')
+                minTemp.textContent = "Temperature low: " + data.daily[i].temp.min;
+
+                fiveDay.appendChild(forDay)
+                fiveDay.appendChild(maxTemp)
+                fiveDay.appendChild(minTemp)
+
+
+
             }
+            // var toAdd = document.createDocumentFragment();
+            // for (var i = 1; i < 6; i++) {
+            //     var newDay = new Date(data.daily[i].dt * 1000);
+            //     newDay = newDay.toLocaleDateString("en-US");
+            //     var newDiv = document.createElement('div');
+            //     newDiv.textContent = newDay;
+            //     toAdd.appendChild(newDiv);
+            // }
+
+            // document.appendChild(toAdd);
+
+
+            // var cardOne = document.getElementById("day-one")
+            // var fiveDayFor = document.getElementById("five-day")
+            // cardOne[i].textContent = newDay
+            // var maxTemp = document.createElement('p')
+            // maxTemp[i].textContent = data.daily[i].temp.max
+            // fiveDayFor.appendChild(cardOne, maxTemp);
+
+            // var z = document.createElement('p'); // is a node
+            // z.innerHTML = 'test satu dua tiga';
+            // document.body.appendChild(z);
+
+            // cardOne.innerHTML += "<div>" + "<p>" + newDay + "</p>" + "<p>" + "Temperature high: " + data.daily[i].temp.max + "</p>" + "<p>" + "Temperature low: " + data.daily[i].temp.min + "</p>" + "</div>";
+            // fiveDayFor.appendChild("<div>" + "<p>" + newDay + "</p>" + "<p>" + "Temperature high: " + data.daily[i].temp.max + "</p>" + "<p>" + "Temperature low: " + data.daily[i].temp.min + "</p>" + "</div>");
+
+
+
+
+
+
+
+            // fiveDayForcast();
         })
 }//end of getUvindex function
+// function fiveDayForcast() {
+//     for (var i = 1; i < 6; i++) {
+//         var newDay = new Date(data.daily[i].dt * 1000);
+//         newDay = newDay.toLocaleDateString("en-US");
+//         console.log(newDay)
+//         console.log(data.daily[i].temp.min)
+//         console.log(data.daily[i].temp.max)
+//     }
+
 ;
