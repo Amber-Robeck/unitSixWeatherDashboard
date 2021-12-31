@@ -33,9 +33,13 @@ if (citySearch) {
         console.log(savedHistory)
         console.log(typeof savedHistory)
         console.log(citySearch)
-        var li = document.createElement("li");
-        li.textContent = savedHistory;
-        historyList.prepend(li);
+        // var li = document.createElement("li");
+        // li.textContent = savedHistory;
+        // historyList.prepend(li);
+        var buttonList = document.createElement("button");
+        buttonList.textContent = savedHistory;
+        buttonList.className = "list-group-item btn btn-secondary btn-block"
+        historyList.prepend(buttonList);
     }
 } else {
     var citySearch = [];
@@ -66,9 +70,10 @@ function writeList() {
         var history = citySearch[i];
         console.log(history)
     }
-    var li = document.createElement("li");
-    li.textContent = history;
-    historyList.prepend(li);
+    var buttonList = document.createElement("button");
+    buttonList.textContent = history;
+    buttonList.className = "list-group-item btn btn-secondary btn-block"
+    historyList.prepend(buttonList);
 }//end of writeList function
 
 //this function gets forcast api with userWrite, grabs data and writes it to user side
@@ -117,6 +122,8 @@ function getUvindex() {
             console.log(data);
             currentUv.textContent = "UV index " + data.current.uvi;
             for (var i = 1; i < 6; i++) {
+                //https://www.w3schools.com/js/js_dates.asp quick link for date
+
                 var newDay = new Date(data.daily[i].dt * 1000);
                 newDay = newDay.toLocaleDateString("en-US");
                 console.log(newDay)
@@ -124,8 +131,11 @@ function getUvindex() {
                 console.log(data.daily[i].temp.max)
 
                 var fiveDay = document.getElementById("five-day")
+                var oneDay = document.getElementById("dayOne")
                 //writing index date
+                oneDay.className = "card-body";
                 var forDay = document.createElement('p')
+                forDay.className = "card-text";
                 forDay.textContent = newDay;
                 //writing index max temp
                 var maxTemp = document.createElement('p')
@@ -134,9 +144,11 @@ function getUvindex() {
                 var minTemp = document.createElement('p')
                 minTemp.textContent = "Temperature low: " + data.daily[i].temp.min;
 
-                fiveDay.appendChild(forDay)
-                fiveDay.appendChild(maxTemp)
-                fiveDay.appendChild(minTemp)
+
+                oneDay.appendChild(forDay)
+                oneDay.appendChild(maxTemp)
+                oneDay.appendChild(minTemp)
+                fiveDay.appendChild(oneDay)
 
 
 

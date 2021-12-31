@@ -10,41 +10,69 @@
 </head>
 
 <body>
-    <!-- As a heading -->
-    <nav class="navbar bg-dark text-light">
-        <div class="container-fluid">
+    <div class="container-fluid">
+        <!-- As a heading -->
+        <nav class="navbar bg-dark text-light">
             <span class="navbar-brand mb-0 h1">Weather Dashboard</span>
-        </div>
-    </nav>
+        </nav>
+        <div class="container">
 
-    <div class="input-group mb-3">
-        <input type="text" id="userInput" placeholder="Enter a city" aria-label="User input city here"
-            aria-describedby="button-addon2">
-        <button class="btn btn-outline-secondary" type="button" id="button-addon2">Search</button>
-    </div>
-    <ul id="history" class="list-group list-group-flush"></ul>
-    <div class="card" style="width: 18rem;">
-        <img src="" id="icon" class="card-img-top" alt="">
-        <div class="card-body">
-            <h5 id="city-name" class="card-title">Name of your city</h5>
-            <p id="description" class="card-text">Brief description of current conditions.</p>
+            <div class="row">
+                <div class="col">
+                    <div class="card-body">
+                        <div class="card" style="width: 18rem;">
+                            <div class="input-group mb-3">
+                                <input type="text" id="userInput" placeholder="Enter a city"
+                                    aria-label="User input city here" aria-describedby="button-addon2">
+                                <button class="btn btn-outline-secondary" type="button"
+                                    id="button-addon2">Search</button>
+                                <div>
+                                    <ul id="history" class="list-group-flush"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="col">
+
+                    <div class="card" style="width: 18rem;">
+                        <img src="" id="icon" class="card-img-top" alt="">
+                        <div class="card-body">
+                            <h5 id="city-name" class="card-title">Name of your city</h5>
+                            <p id="description" class="card-text">Brief description of current conditions.</p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li id="temp" class="list-group-item">Temp</li>
+                            <li id="wind" class="list-group-item">Wind</li>
+                            <li id="humidity" class="list-group-item">Humidity</li>
+                            <li id="uv" class="list-group-item">UV index</li>
+                        </ul>
+                    </div>
+                </div>
+
+
+
+
+                <div class="col">
+
+                    <div class="card" style="width: 18rem;"></div>
+                    <div id="five-day" class="card-body">
+                        <h5 class="card-title">Five Day Forecast</h5>
+                    </div>
+
+                    <div id="dayOne"></div>
+                    <!-- <p id="forecast" class="card-text">Brief description of current conditions.</p>
+                        <div id="day-one" class="card-text">Day one</div>
+                        <p id="max-temp" class="card-text">Max</p>
+                        <p id="min-temp" class="card-text">Min</p> -->
+                </div>
+            </div>
         </div>
-        <ul class="list-group list-group-flush">
-            <li id="temp" class="list-group-item">Temp</li>
-            <li id="wind" class="list-group-item">Wind</li>
-            <li id="humidity" class="list-group-item">Humidity</li>
-            <li id="uv" class="list-group-item">UV index</li>
-        </ul>
     </div>
-    <div class="card" style="width: 18rem;"></div>
-    <div id="five-day" class="card-body">
-        <h5 class="card-title">Five Day Forecast</h5>
-        <!-- <p id="forecast" class="card-text">Brief description of current conditions.</p>
-        <div id="day-one" class="card-text">Day one</div>
-        <p id="max-temp" class="card-text">Max</p>
-        <p id="min-temp" class="card-text">Min</p> -->
-    </div>
-    </div>
+
     <script src="script.js"></script>
 
 </body>
