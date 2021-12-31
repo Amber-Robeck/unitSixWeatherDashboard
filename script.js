@@ -86,17 +86,92 @@ function writeList() {
 // }
 
 //listen for buttons inside of event listener
-var tutorTest = document.getElementById("tutor-test")
-tutorTest.addEventListener("click", function (event) {
-    console.log(event.target)
+var savedHistoryDiv = document.getElementById("saved-history")
+savedHistoryDiv.addEventListener("click", function (event) {
+    var pushedButton = event.target.textContent;
     //store user event click
     //adding user click textContent to api call instead of userWrite
     //Calling functions by passing argument
+    fetch(
+        'https://api.openweathermap.org/data/2.5/forecast?q=' + pushedButton + '&units=imperial&appid=' + apiKey
+    )
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+            //Adding data inputs to corresponding html tags
+            currentTemp.textContent = "Temp " + Math.round(data.list[0].main.temp) + "F";
+            currentWind.textContent = "Wind " + Math.round(data.list[0].wind.speed) + " MPH";
+            currentHumidity.textContent = "Humidity " + data.list[0].main.humidity + "%";
+            cityName.textContent = data.city.name;
+            //collecting longitude and latitude for getUvindex function
+            lon = data.city.coord.lon;
+            lat = data.city.coord.lat;
+            //adding weather description and icons to the card
+            weatherDesc.textContent = data.list[0].weather[0].description;
+            var iconCode = data.list[0].weather[0].icon
+            var iconURL = "https://openweathermap.org/img/w/" + iconCode + ".png";
+            weatherIcon.src = iconURL;
+        })
+    getUvindex();
+
 
 }
 )
 
+// function getSavedFiveDay() {
 
+//     fetch('https://api.openweathermap.org/data/2.5/onecall?lat=' + (lat) + '&lon=' + (lon) + '&exclude=minutely,hourly&units=imperial&appid=' + apiKey)
+//         .then(function (response) {
+//             //Added line to check for fiveDay children and remove them before writing
+//             while (fiveDay.firstChild) fiveDay.removeChild(fiveDay.firstChild);
+//             return response.json();
+//         })
+//         .then(function (data) {
+//             console.log(data);
+//             currentUv.textContent = "UV index " + data.current.uvi;
+//             for (var i = 1; i < 6; i++) {
+//                 //https://www.w3schools.com/js/js_dates.asp quick link for date
+
+//                 var newDay = new Date(data.daily[i].dt * 1000);
+//                 newDay = newDay.toLocaleDateString("en-US");
+//                 // var fiveDay = document.getElementById("five-day");
+//                 //create card
+//                 var oneDay = document.createElement("div");
+//                 //writing index date
+//                 oneDay.className = "card col-2 text-white bg-primary text-center";
+//                 var forDay = document.createElement('p');
+//                 forDay.className = "card-text text-center";
+//                 forDay.textContent = newDay;
+//                 //adding icon
+//                 var image = document.createElement('img');
+//                 var iconCode = data.daily[i].weather[0].icon;
+//                 var iconURL = "https://openweathermap.org/img/w/" + iconCode + ".png";
+//                 image.src = iconURL;
+//                 //Descrition
+//                 var desc = document.createElement('p');
+//                 desc.textContent = data.daily[i].weather[0].description;
+//                 //Changed variable to include both max and min temps
+//                 var maxMinTemp = document.createElement('p');
+//                 maxMinTemp.textContent = "High: " + Math.round(data.daily[i].temp.max) + "F" + "  Low: " + Math.round(data.daily[i].temp.min) + "F";
+//                 //humidity
+//                 var humid = document.createElement('p');
+//                 humid.textContent = "Humidty " + data.daily[i].humidity + "%";
+//                 //wind speed
+//                 var windS = document.createElement('p');
+//                 windS.textContent = "Wind " + Math.round(data.daily[i].wind_speed) + " MPH";
+
+
+//                 oneDay.appendChild(forDay);
+//                 oneDay.appendChild(image);
+//                 oneDay.appendChild(desc);
+//                 oneDay.appendChild(maxMinTemp);
+//                 oneDay.appendChild(humid);
+//                 oneDay.appendChild(windS);
+//                 fiveDay.appendChild(oneDay);
+
+//             }
+//         })
 
 
 
