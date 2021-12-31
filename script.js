@@ -13,8 +13,11 @@ var lat = "";
 var citySearch = [];
 var userWrite = "";
 var weatherIcon = document.getElementById("icon")
+var fiveDay = document.getElementById("five-day");
 
-
+//TODO: Occasional Glitch in writing cards on bottom of page adds to them 10+ cards
+//TODO: After deleting console.logs dom is not getting cleared fast enough, need to make sure dom is cleared on click function
+//maybe .empty or removeChild in getUvfunction
 
 //TODO: find a way to only save one of each city even when multiple are displayed
 //TODO: Change list elements to buttons to click and bring data back up
@@ -22,6 +25,9 @@ var weatherIcon = document.getElementById("icon")
 //TODO: clear or delete button
 //TODO: Add a city to start with so page looks completed without adding hide classes or loading screen
 //TODO: Add a keyboard event listener for enter key
+//TODO: change some local variables to global and re-use in both current and five day forecast
+
+
 
 //put this in a function?
 // checking local storage and then writing on page
@@ -32,7 +38,7 @@ if (citySearch) {
         var savedHistory = citySearch[i];
         var buttonList = document.createElement("button");
         buttonList.textContent = savedHistory;
-        buttonList.className = "list-group-item btn btn-secondary btn-block"
+        buttonList.className = "list-group-item btn btn-secondary btn-block city-button"
         historyList.prepend(buttonList);
     }
 } else {
@@ -65,10 +71,35 @@ function writeList() {
     }
     var buttonList = document.createElement("button");
     buttonList.textContent = history;
-    buttonList.className = "list-group-item btn btn-secondary btn-block"
+    buttonList.className = "list-group-item btn btn-secondary btn-block city-button"
     historyList.prepend(buttonList);
     userInput.value = "";
 }//end of writeList function
+
+// if (document.querySelectorAll("button.city-button")) {
+//     var cityHistoryBtn = document.querySelectorAll("button.city-button");
+//     console.log(cityHistoryBtn.textContent);
+//     cityHistoryBtn.addEventListener("click", function () {
+
+//     }
+//     )
+// }
+
+//listen for buttons inside of event listener
+var tutorTest = document.getElementById("tutor-test")
+tutorTest.addEventListener("click", function (event) {
+    console.log(event.target)
+    //store user event click
+    //adding user click textContent to api call instead of userWrite
+    //Calling functions by passing argument
+
+}
+)
+
+
+
+
+
 
 //this function gets forcast api with userWrite, grabs data and writes it to user side
 function getApiData() {
@@ -106,6 +137,8 @@ function getUvindex() {
 
     fetch('https://api.openweathermap.org/data/2.5/onecall?lat=' + (lat) + '&lon=' + (lon) + '&exclude=minutely,hourly&units=imperial&appid=' + apiKey)
         .then(function (response) {
+            //Added line to check for fiveDay children and remove them before writing
+            while (fiveDay.firstChild) fiveDay.removeChild(fiveDay.firstChild);
             return response.json();
         })
         .then(function (data) {
@@ -116,7 +149,7 @@ function getUvindex() {
 
                 var newDay = new Date(data.daily[i].dt * 1000);
                 newDay = newDay.toLocaleDateString("en-US");
-                var fiveDay = document.getElementById("five-day");
+                // var fiveDay = document.getElementById("five-day");
                 //create card
                 var oneDay = document.createElement("div");
                 //writing index date
@@ -150,6 +183,7 @@ function getUvindex() {
                 oneDay.appendChild(humid);
                 oneDay.appendChild(windS);
                 fiveDay.appendChild(oneDay);
+
             }
         })
 }
