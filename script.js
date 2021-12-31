@@ -131,18 +131,18 @@ function getUvindex() {
                 console.log(data.daily[i].temp.max)
 
                 var fiveDay = document.getElementById("five-day")
-                var oneDay = document.getElementById("dayOne")
+                var oneDay = document.createElement("div")
                 //writing index date
-                oneDay.className = "card-body";
+                oneDay.className = "card col-2 text-white bg-primary";
                 var forDay = document.createElement('p')
                 forDay.className = "card-text";
                 forDay.textContent = newDay;
                 //writing index max temp
                 var maxTemp = document.createElement('p')
-                maxTemp.textContent = "Temperature high: " + data.daily[i].temp.max;
+                maxTemp.textContent = "High: " + data.daily[i].temp.max + "F";
                 //writing index min temp
                 var minTemp = document.createElement('p')
-                minTemp.textContent = "Temperature low: " + data.daily[i].temp.min;
+                minTemp.textContent = "Low: " + data.daily[i].temp.min + "F";
 
 
                 oneDay.appendChild(forDay)

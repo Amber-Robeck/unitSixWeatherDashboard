@@ -16,9 +16,9 @@
         </nav>
         <div class="container">
             <div class="row">
-                <div class="col">
+                <div class="col-4">
                     <div class="card-body">
-                        <div class="card" style="width: 18rem;">
+                        <div class="card">
                             <div class="input-group mb-3">
                                 <input type="text" id="userInput" placeholder="Enter a city"
                                     aria-label="User input city here" aria-describedby="button-addon2">
@@ -32,11 +32,11 @@
                     </div>
                 </div>
 
-                <div class="col">
-                    <div class="card" style="width: 18rem;">
-                        <img src="" id="icon" class="card-img-top" alt="">
+                <div class="col-8">
+                    <div class="card">
                         <div class="card-body">
                             <h5 id="city-name" class="card-title">Name of your city</h5>
+                            <img src="" id="icon" alt="">
                             <p id="description" class="card-text">Brief description of current conditions.</p>
                         </div>
                         <ul class="list-group list-group-flush">
@@ -45,23 +45,36 @@
                             <li id="humidity" class="list-group-item">Humidity</li>
                             <li id="uv" class="list-group-item">UV index</li>
                         </ul>
+
                     </div>
                 </div>
 
-                <div class="col">
-                    <div class="card" style="width: 18rem;"></div>
-                    <div id="five-day" class="card-body">
-                        <h5 class="card-title">Five Day Forecast</h5>
+
+                <div class="row">
+
+
+                    <div class="col-12">
+
+                        <div class="card-body">
+                            <h5 class="card-title">Five Day Forecast</h5>
+
+                            <div id="five-day" class="d-flex flex-row justify-content-between"></div>
+
+                        </div>
                     </div>
 
-                    <div id="dayOne"></div>
-
                 </div>
+
+
+
+
             </div>
         </div>
-    </div>
 
-    <script src="script.js"></script>
+
+
+
+        <script src="script.js"></script>
 
 </body>
 
