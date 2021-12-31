@@ -49,7 +49,16 @@ if (citySearch) {
 //if citySearch is >= 5 remove first item from array(oldest one) remove last list item
 button.addEventListener("click", function () {
     userWrite = userInput.value
-    if (citySearch.length >= 5) {
+    //if nothing is in input field return
+    if (userInput.value < 1) {
+        return;
+    }
+    else if (citySearch.includes(userInput.value)) {
+        //TODO:want to add push to top of list
+        return;
+
+    }
+    else if (citySearch.length >= 5) {
         citySearch.shift()
         citySearch.push(userWrite)
         historyList.removeChild(historyList.childNodes[4]);
@@ -119,63 +128,6 @@ savedHistoryDiv.addEventListener("click", function (event) {
 }
 )
 
-// function getSavedFiveDay() {
-
-//     fetch('https://api.openweathermap.org/data/2.5/onecall?lat=' + (lat) + '&lon=' + (lon) + '&exclude=minutely,hourly&units=imperial&appid=' + apiKey)
-//         .then(function (response) {
-//             //Added line to check for fiveDay children and remove them before writing
-//             while (fiveDay.firstChild) fiveDay.removeChild(fiveDay.firstChild);
-//             return response.json();
-//         })
-//         .then(function (data) {
-//             console.log(data);
-//             currentUv.textContent = "UV index " + data.current.uvi;
-//             for (var i = 1; i < 6; i++) {
-//                 //https://www.w3schools.com/js/js_dates.asp quick link for date
-
-//                 var newDay = new Date(data.daily[i].dt * 1000);
-//                 newDay = newDay.toLocaleDateString("en-US");
-//                 // var fiveDay = document.getElementById("five-day");
-//                 //create card
-//                 var oneDay = document.createElement("div");
-//                 //writing index date
-//                 oneDay.className = "card col-2 text-white bg-primary text-center";
-//                 var forDay = document.createElement('p');
-//                 forDay.className = "card-text text-center";
-//                 forDay.textContent = newDay;
-//                 //adding icon
-//                 var image = document.createElement('img');
-//                 var iconCode = data.daily[i].weather[0].icon;
-//                 var iconURL = "https://openweathermap.org/img/w/" + iconCode + ".png";
-//                 image.src = iconURL;
-//                 //Descrition
-//                 var desc = document.createElement('p');
-//                 desc.textContent = data.daily[i].weather[0].description;
-//                 //Changed variable to include both max and min temps
-//                 var maxMinTemp = document.createElement('p');
-//                 maxMinTemp.textContent = "High: " + Math.round(data.daily[i].temp.max) + "F" + "  Low: " + Math.round(data.daily[i].temp.min) + "F";
-//                 //humidity
-//                 var humid = document.createElement('p');
-//                 humid.textContent = "Humidty " + data.daily[i].humidity + "%";
-//                 //wind speed
-//                 var windS = document.createElement('p');
-//                 windS.textContent = "Wind " + Math.round(data.daily[i].wind_speed) + " MPH";
-
-
-//                 oneDay.appendChild(forDay);
-//                 oneDay.appendChild(image);
-//                 oneDay.appendChild(desc);
-//                 oneDay.appendChild(maxMinTemp);
-//                 oneDay.appendChild(humid);
-//                 oneDay.appendChild(windS);
-//                 fiveDay.appendChild(oneDay);
-
-//             }
-//         })
-
-
-
-
 //this function gets forcast api with userWrite, grabs data and writes it to user side
 function getApiData() {
 
@@ -218,6 +170,7 @@ function getUvindex() {
         })
         .then(function (data) {
             console.log(data);
+            currentUv.className = "list-group-item list-group-item-success"
             currentUv.textContent = "UV index " + data.current.uvi;
             for (var i = 1; i < 6; i++) {
                 //https://www.w3schools.com/js/js_dates.asp quick link for date
