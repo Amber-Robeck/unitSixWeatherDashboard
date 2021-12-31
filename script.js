@@ -86,7 +86,7 @@ function getApiData() {
             return response.json();
         })
         .then(function (data) {
-            console.log(data);
+            // console.log(data);
             //Adding data inputs to corresponding html tags
             //would like to get rid of decimals if time allows from temp and wind speed, possibly add min/max to both
             currentTemp.textContent = "Temp " + Math.round(data.list[0].main.temp) + "F";
@@ -126,28 +126,48 @@ function getUvindex() {
 
                 var newDay = new Date(data.daily[i].dt * 1000);
                 newDay = newDay.toLocaleDateString("en-US");
-                console.log(newDay)
-                console.log(data.daily[i].temp.min)
-                console.log(data.daily[i].temp.max)
+                // console.log(newDay)
+                // console.log(data.daily[i].temp.min)
+                // console.log(data.daily[i].temp.max)
 
                 var fiveDay = document.getElementById("five-day")
                 var oneDay = document.createElement("div")
                 //writing index date
-                oneDay.className = "card col-2 text-white bg-primary";
+                oneDay.className = "card col-2 text-white bg-primary text-center";
                 var forDay = document.createElement('p')
-                forDay.className = "card-text";
+                forDay.className = "card-text text-center";
                 forDay.textContent = newDay;
-                //writing index max temp
-                var maxTemp = document.createElement('p')
-                maxTemp.textContent = "High: " + Math.round(data.daily[i].temp.max) + "F";
-                //writing index min temp
-                var minTemp = document.createElement('p')
-                minTemp.textContent = "Low: " + Math.round(data.daily[i].temp.min) + "F";
+                var image = document.createElement('img')
+                var iconCode = data.daily[i].weather[0].icon;
+                var iconURL = "https://openweathermap.org/img/w/" + iconCode + ".png";
+                image.src = iconURL;
+                var desc = document.createElement('p')
+                // desc.className = "text-center"
+                desc.textContent = data.daily[i].weather[0].description;
+                console.log(data.daily[i].weather[0].icon)
+                // //writing index max temp
+                // var maxTemp = document.createElement('p')
+                // maxTemp.textContent = "High: " + Math.round(data.daily[i].temp.max) + "F";
+                // //writing index min temp
+                // var minTemp = document.createElement('p')
+                // minTemp.textContent = "Low: " + Math.round(data.daily[i].temp.min) + "F";
+                var maxMinTemp = document.createElement('p')
+                // maxMinTemp.className = "text-center"
+                maxMinTemp.textContent = "High: " + Math.round(data.daily[i].temp.max) + "F" + "  Low: " + Math.round(data.daily[i].temp.min) + "F";
+                var humid = document.createElement('p')
+                humid.textContent = "Humidty " + data.daily[i].humidity + "%";
+                var windS = document.createElement('p')
+                windS.textContent = "Wind " + Math.round(data.daily[i].wind_speed) + " MPH";
 
 
                 oneDay.appendChild(forDay)
-                oneDay.appendChild(maxTemp)
-                oneDay.appendChild(minTemp)
+                oneDay.appendChild(image)
+                oneDay.appendChild(desc)
+                // oneDay.appendChild(maxTemp)
+                // oneDay.appendChild(minTemp)
+                oneDay.appendChild(maxMinTemp)
+                oneDay.appendChild(humid)
+                oneDay.appendChild(windS)
                 fiveDay.appendChild(oneDay)
 
 
