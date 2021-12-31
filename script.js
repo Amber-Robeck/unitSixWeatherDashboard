@@ -89,8 +89,8 @@ function getApiData() {
             console.log(data);
             //Adding data inputs to corresponding html tags
             //would like to get rid of decimals if time allows from temp and wind speed, possibly add min/max to both
-            currentTemp.textContent = "Temp " + data.list[0].main.temp;
-            currentWind.textContent = "Wind " + data.list[0].wind.speed + " MPH";
+            currentTemp.textContent = "Temp " + Math.round(data.list[0].main.temp) + "F";
+            currentWind.textContent = "Wind " + Math.round(data.list[0].wind.speed) + " MPH";
             currentHumidity.textContent = "Humidity " + data.list[0].main.humidity + "%";
             cityName.textContent = data.city.name;
             lon = data.city.coord.lon;
@@ -139,10 +139,10 @@ function getUvindex() {
                 forDay.textContent = newDay;
                 //writing index max temp
                 var maxTemp = document.createElement('p')
-                maxTemp.textContent = "High: " + data.daily[i].temp.max + "F";
+                maxTemp.textContent = "High: " + Math.round(data.daily[i].temp.max) + "F";
                 //writing index min temp
                 var minTemp = document.createElement('p')
-                minTemp.textContent = "Low: " + data.daily[i].temp.min + "F";
+                minTemp.textContent = "Low: " + Math.round(data.daily[i].temp.min) + "F";
 
 
                 oneDay.appendChild(forDay)
