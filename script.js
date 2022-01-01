@@ -27,22 +27,21 @@ var fiveDay = document.getElementById("five-day");
 //TODO: Add a keyboard event listener for enter key
 //TODO: change some local variables to global and re-use in both current and five day forecast
 
-
-
-//put this in a function?
 // checking local storage and then writing on page
-var citySearch = JSON.parse(localStorage.getItem("Search"))
-if (citySearch) {
-    // writeList();
-    for (var i = 0; i < citySearch.length; i++) {
-        var savedHistory = citySearch[i];
-        var buttonList = document.createElement("button");
-        buttonList.textContent = savedHistory;
-        buttonList.className = "list-group-item btn btn-secondary btn-block city-button"
-        historyList.prepend(buttonList);
+function getSaved() {
+    if (JSON.parse(localStorage.getItem("Search"))) {
+        citySearch = JSON.parse(localStorage.getItem("Search"))
+        // writeList();
+        for (var i = 0; i < citySearch.length; i++) {
+            var savedHistory = citySearch[i];
+            var buttonList = document.createElement("button");
+            buttonList.textContent = savedHistory;
+            buttonList.className = "list-group-item btn btn-secondary btn-block city-button"
+            historyList.prepend(buttonList);
+        }
+    } else {
+        citySearch = ["Minneapolis"];
     }
-} else {
-    var citySearch = [];
 }//end of local storage check and write
 
 //search button userinput saved to local storage in citySearch array
@@ -53,20 +52,23 @@ button.addEventListener("click", function () {
     if (userInput.value < 1) {
         return;
     }
-    else if (citySearch.includes(userInput.value)) {
-        //TODO:want to add push to top of list
-        return;
+    // else if (citySearch.includes(userInput.value)) {
+    //     //TODO:want to add push to top of list
+    //     return;
 
-    }
+    // }
     else if (citySearch.length >= 5) {
         citySearch.shift()
         citySearch.push(userWrite)
         historyList.removeChild(historyList.childNodes[4]);
+        localStorage.setItem("Search", JSON.stringify(citySearch));
+
     }
     else {
+        console.log(citySearch)
         citySearch.push(userWrite)
+        localStorage.setItem("Search", JSON.stringify(citySearch));
     }
-    localStorage.setItem("Search", JSON.stringify(citySearch));
 
     getApiData();
 })//end of click writer
@@ -98,6 +100,7 @@ function writeList() {
 var savedHistoryDiv = document.getElementById("saved-history")
 savedHistoryDiv.addEventListener("click", function (event) {
     var pushedButton = event.target.textContent;
+    console.log(event.target)
     //store user event click
     //adding user click textContent to api call instead of userWrite
     //Calling functions by passing argument
@@ -121,8 +124,9 @@ savedHistoryDiv.addEventListener("click", function (event) {
             var iconCode = data.list[0].weather[0].icon
             var iconURL = "https://openweathermap.org/img/w/" + iconCode + ".png";
             weatherIcon.src = iconURL;
-        })
-    getUvindex();
+            getUvindex();
+        }
+        )
 
 
 }
@@ -170,8 +174,17 @@ function getUvindex() {
         })
         .then(function (data) {
             console.log(data);
-            currentUv.className = "list-group-item list-group-item-success"
             currentUv.textContent = "UV index " + data.current.uvi;
+            console
+            if (data.current.uvi <= 2) {
+                currentUv.className = "list-group-item list-group-item-success"
+            } else if (data.current.uvi > 2 && data.current.uvi <= 5) {
+                currentUv.className = "list-group-item list-group-item-warning"
+            } else {
+                currentUv.className = "list-group-item list-group-item-danger"
+            }
+
+
             for (var i = 1; i < 6; i++) {
                 //https://www.w3schools.com/js/js_dates.asp quick link for date
 
@@ -216,4 +229,5 @@ function getUvindex() {
         })
 }
 
+getSaved();
 ;
