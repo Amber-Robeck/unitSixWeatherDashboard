@@ -15,17 +15,13 @@ var userWrite = "";
 var weatherIcon = document.getElementById("icon")
 var fiveDay = document.getElementById("five-day");
 
-//TODO: Occasional Glitch in writing cards on bottom of page adds to them 10+ cards
-//TODO: After deleting console.logs dom is not getting cleared fast enough, need to make sure dom is cleared on click function
-//maybe .empty or removeChild in getUvfunction
-
 //TODO: find a way to only save one of each city even when multiple are displayed
-//TODO: Change list elements to buttons to click and bring data back up
 //TODO: maybe save api data into array so when click on buttons it brings up last data, also on page reload bring up last searched city
 //TODO: clear or delete button
 //TODO: Add a city to start with so page looks completed without adding hide classes or loading screen
 //TODO: Add a keyboard event listener for enter key
 //TODO: change some local variables to global and re-use in both current and five day forecast
+//TODO: pass argument of userinput to function getApiData
 
 // checking local storage and then writing on page
 function getSaved() {
@@ -50,6 +46,7 @@ button.addEventListener("click", function () {
     userWrite = userInput.value
     //if nothing is in input field return
     if (userInput.value < 1) {
+        alert("You must enter in a valid city!")
         return;
     }
     // else if (citySearch.includes(userInput.value)) {
@@ -87,30 +84,20 @@ function writeList() {
     userInput.value = "";
 }//end of writeList function
 
-// if (document.querySelectorAll("button.city-button")) {
-//     var cityHistoryBtn = document.querySelectorAll("button.city-button");
-//     console.log(cityHistoryBtn.textContent);
-//     cityHistoryBtn.addEventListener("click", function () {
 
-//     }
-//     )
-// }
-
-//listen for buttons inside of event listener
+//listening for buttons inside of div
 var savedHistoryDiv = document.getElementById("saved-history")
 savedHistoryDiv.addEventListener("click", function (event) {
     var pushedButton = event.target.textContent;
-    console.log(event.target)
-    //store user event click
-    //adding user click textContent to api call instead of userWrite
-    //Calling functions by passing argument
     fetch(
         'https://api.openweathermap.org/data/2.5/forecast?q=' + pushedButton + '&units=imperial&appid=' + apiKey
     )
         .then(function (response) {
             return response.json();
+
         })
         .then(function (data) {
+            console.log(data)
             //Adding data inputs to corresponding html tags
             currentTemp.textContent = "Temp " + Math.round(data.list[0].main.temp) + "F";
             currentWind.textContent = "Wind " + Math.round(data.list[0].wind.speed) + " MPH";
@@ -139,6 +126,10 @@ function getApiData() {
         'https://api.openweathermap.org/data/2.5/forecast?q=' + userWrite + '&units=imperial&appid=' + apiKey
     )
         .then(function (response) {
+            if (response.status !== 200) {
+                alert("Something went wrong, please try again.")
+                return;
+            }
             return response.json();
         })
         .then(function (data) {
