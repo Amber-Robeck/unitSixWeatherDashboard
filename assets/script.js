@@ -30,15 +30,32 @@ function getSaved() {
         //displaying last searched city on page
         getApiData(userWrite);
         loopCity(0);
+        removeLoadCity();
     } else {
         //adds a default city to the display page if user does not have local storage
         //change this to another key in local and then on page load remove so it's not saved into user local storage
         //currently causing error because it is not writing to page, loop city function
-        citySearch = ["Anchorage"];
+        var loadCity = ["Anchorage"];
+        localStorage.setItem("Load", JSON.stringify(loadCity));
         userWrite = "Anchorage";
         getApiData(userWrite);
+
+
     }
 }//end of local storage check and write
+
+//Removes local storage item Load
+function removeLoadCity() {
+    if (JSON.parse(localStorage.getItem("Search"))) {
+        localStorage.getItem("Load");
+        console.log("Load")
+        localStorage.removeItem("Load");
+    }
+    // window.addEventListener('load', function (item) {
+    //     localStorage.removeItem(item);
+    // })
+}
+
 
 //This function creates buttons for the  saved history search when page is loaded
 function loopCity(n) {
