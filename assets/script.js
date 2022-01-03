@@ -35,7 +35,9 @@ function getSaved() {
             historyList.prepend(buttonList);
         }
     } else {
-        citySearch = ["Minneapolis"];
+        citySearch = ["Anchorage"];
+        userWrite = "Anchorage";
+        getApiData(userWrite);
     }
 }//end of local storage check and write
 
@@ -102,6 +104,15 @@ function writeList() {
 
 //listening for buttons inside of div
 var savedHistoryDiv = document.getElementById("saved-history")
+// savedHistoryDiv.addEventListener("click", function (event) {
+//     var userWrite = event.target.textContent;
+//     console.log(userWrite);
+//     getApiData();
+
+// })
+
+
+
 savedHistoryDiv.addEventListener("click", function (event) {
     var pushedButton = event.target.textContent;
     fetch(
