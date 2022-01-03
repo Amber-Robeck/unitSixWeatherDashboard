@@ -19,7 +19,6 @@ var fiveDay = document.getElementById("five-day");
 //TODO: maybe save api data into array so when click on buttons it brings up last data, also on page reload bring up last searched city
 //TODO: clear or delete button
 //TODO: Add a city to start with so page looks completed without adding hide classes or loading screen
-//TODO: Add a keyboard event listener for enter key
 //TODO: change some local variables to global and re-use in both current and five day forecast
 //TODO: pass argument of userinput to function getApiData
 
@@ -69,6 +68,22 @@ button.addEventListener("click", function () {
 
     getApiData();
 })//end of click writer
+
+
+//making enter key function for the userInput
+userInput.addEventListener("keyup", function (event) {
+    console.log(event);
+    if (event.key == "Enter") {
+        console.log("working");
+        button.click();
+    }
+    // event.preventDefault();
+    // Number 13 is the "Enter" key on the keyboard
+    // if (event.keycode === 13) {
+    //     console.log("working")
+    // }
+})
+
 
 //creating and writing list elements to page    
 //changed appendChild to prepend to add most recent history first
