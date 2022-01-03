@@ -16,30 +16,41 @@ var weatherIcon = document.getElementById("icon")
 var fiveDay = document.getElementById("five-day");
 
 //TODO: find a way to only save one of each city even when multiple are displayed
-//TODO: maybe save api data into array so when click on buttons it brings up last data, also on page reload bring up last searched city
 //TODO: clear or delete button
-//TODO: Add a city to start with so page looks completed without adding hide classes or loading screen
 //TODO: change some local variables to global and re-use in both current and five day forecast
-//TODO: pass argument of userinput to function getApiData
+
 
 // checking local storage and then writing on page
 function getSaved() {
     if (JSON.parse(localStorage.getItem("Search"))) {
         citySearch = JSON.parse(localStorage.getItem("Search"))
-        // writeList();
-        for (var i = 0; i < citySearch.length; i++) {
-            var savedHistory = citySearch[i];
-            var buttonList = document.createElement("button");
-            buttonList.textContent = savedHistory;
-            buttonList.className = "list-group-item btn btn-secondary btn-block city-button"
-            historyList.prepend(buttonList);
-        }
+        //grabs last searched item
+        userWrite = citySearch[citySearch.length - 1];
+        console.log(userWrite);
+        //displaying last searched city on page
+        getApiData(userWrite);
+        loopCity(0);
     } else {
+        //adds a default city to the display page if user does not have local storage
+        //change this to another key in local and then on page load remove so it's not saved into user local storage
+        //currently causing error because it is not writing to page, loop city function
         citySearch = ["Anchorage"];
         userWrite = "Anchorage";
         getApiData(userWrite);
     }
 }//end of local storage check and write
+
+//This function creates buttons for the  saved history search when page is loaded
+function loopCity(n) {
+    var para = n;
+    for (var i = para; i < citySearch.length; i++) {
+        var savedHistory = citySearch[i];
+        var buttonList = document.createElement("button");
+        buttonList.textContent = savedHistory;
+        buttonList.className = "list-group-item btn btn-secondary btn-block city-button"
+        historyList.prepend(buttonList);
+    }
+}
 
 //search button userinput saved to local storage in citySearch array
 //if citySearch is >= 5 remove first item from array(oldest one) remove last list item
@@ -58,6 +69,7 @@ button.addEventListener("click", function () {
     else if (citySearch.length >= 5) {
         citySearch.shift()
         citySearch.push(userWrite)
+        //if empty string error message, need to find a way to not push strings to array
         historyList.removeChild(historyList.childNodes[4]);
         localStorage.setItem("Search", JSON.stringify(citySearch));
 
@@ -69,30 +81,32 @@ button.addEventListener("click", function () {
     }
 
     getApiData();
+    writeList();
 })//end of click writer
 
 
 //making enter key function for the userInput
 userInput.addEventListener("keyup", function (event) {
-    console.log(event);
+    // console.log(event);
     if (event.key == "Enter") {
-        console.log("working");
+        // console.log("working");
         button.click();
     }
-    // event.preventDefault();
-    // Number 13 is the "Enter" key on the keyboard
-    // if (event.keycode === 13) {
-    //     console.log("working")
-    // }
 })
+// event.preventDefault();
+// Number 13 is the "Enter" key on the keyboard
+// if (event.keycode === 13) {
+//     console.log("working")
+// }
 
 
 //creating and writing list elements to page    
 //changed appendChild to prepend to add most recent history first
+//needs an if statement to rule out strings to prevent error in click function
 function writeList() {
     for (var i = 0; i < citySearch.length; i++) {
         var history = citySearch[i];
-        console.log(history)
+        // console.log(history)
     }
     var buttonList = document.createElement("button");
     buttonList.textContent = history;
@@ -174,7 +188,7 @@ function getApiData() {
             weatherIcon.src = iconURL;
             getUvindex();
         })
-    writeList();
+    // writeList();
 }//end of getApiData function
 
 
