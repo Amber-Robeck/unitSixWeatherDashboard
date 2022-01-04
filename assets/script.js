@@ -17,7 +17,6 @@ var fiveDay = document.getElementById("five-day");
 
 //TODO: find a way to only save one of each city even when multiple are displayed
 //TODO: clear or delete button
-//TODO: change some local variables to global and re-use in both current and five day forecast
 
 
 // checking local storage and then writing on page
@@ -92,7 +91,7 @@ button.addEventListener("click", function () {
         localStorage.setItem("Search", JSON.stringify(citySearch));
     }
 
-    getApiData();
+    getApiData(userWrite);
     writeList();
 })//end of click writer
 
@@ -124,41 +123,21 @@ var savedHistoryDiv = document.getElementById("saved-history")
 
 savedHistoryDiv.addEventListener("click", function (event) {
     var pushedButton = event.target.textContent;
-    fetch(
-        'https://api.openweathermap.org/data/2.5/forecast?q=' + pushedButton + '&units=imperial&appid=' + apiKey
-    )
-        .then(function (response) {
-            return response.json();
-
-        })
-        .then(function (data) {
-            console.log(data)
-            //Adding data inputs to corresponding html tags
-            currentTemp.textContent = "Temp " + Math.round(data.list[0].main.temp) + "F";
-            currentWind.textContent = "Wind " + Math.round(data.list[0].wind.speed) + " MPH";
-            currentHumidity.textContent = "Humidity " + data.list[0].main.humidity + "%";
-            cityName.textContent = data.city.name;
-            //collecting longitude and latitude for getUvindex function
-            lon = data.city.coord.lon;
-            lat = data.city.coord.lat;
-            //adding weather description and icons to the card
-            weatherDesc.textContent = data.list[0].weather[0].description;
-            var iconCode = data.list[0].weather[0].icon
-            var iconURL = "https://openweathermap.org/img/w/" + iconCode + ".png";
-            weatherIcon.src = iconURL;
-            getUvindex();
-        }
-        )
-
-
+    getApiData(pushedButton);
+    getUvindex();
 }
 )
 
+
+// }
+// )
+
 //this function gets forcast api with userWrite, grabs data and writes it to user side
-function getApiData() {
+function getApiData(input) {
+    var cityInput = input;
 
     fetch(
-        'https://api.openweathermap.org/data/2.5/forecast?q=' + userWrite + '&units=imperial&appid=' + apiKey
+        'https://api.openweathermap.org/data/2.5/forecast?q=' + cityInput + '&units=imperial&appid=' + apiKey
     )
         .then(function (response) {
             if (response.status !== 200) {
@@ -187,8 +166,6 @@ function getApiData() {
 
 
 //This function is fetching onecall api to grap the uv index and write it to user side
-//Currently also grabbing 5 day forecast and writing to page
-
 function getUvindex() {
 
     fetch('https://api.openweathermap.org/data/2.5/onecall?lat=' + (lat) + '&lon=' + (lon) + '&exclude=minutely,hourly&units=imperial&appid=' + apiKey)
