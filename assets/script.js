@@ -33,8 +33,6 @@ function getSaved() {
         removeLoadCity();
     } else {
         //adds a default city to the display page if user does not have local storage
-        //change this to another key in local and then on page load remove so it's not saved into user local storage
-        //currently causing error because it is not writing to page, loop city function
         var loadCity = ["Anchorage"];
         localStorage.setItem("Load", JSON.stringify(loadCity));
         userWrite = "Anchorage";
@@ -51,9 +49,6 @@ function removeLoadCity() {
         console.log("Load")
         localStorage.removeItem("Load");
     }
-    // window.addEventListener('load', function (item) {
-    //     localStorage.removeItem(item);
-    // })
 }
 
 
@@ -104,26 +99,17 @@ button.addEventListener("click", function () {
 
 //making enter key function for the userInput
 userInput.addEventListener("keyup", function (event) {
-    // console.log(event);
     if (event.key == "Enter") {
-        // console.log("working");
         button.click();
     }
 })
-// event.preventDefault();
-// Number 13 is the "Enter" key on the keyboard
-// if (event.keycode === 13) {
-//     console.log("working")
-// }
 
 
 //creating and writing list elements to page    
-//changed appendChild to prepend to add most recent history first
 //needs an if statement to rule out strings to prevent error in click function
 function writeList() {
     for (var i = 0; i < citySearch.length; i++) {
         var history = citySearch[i];
-        // console.log(history)
     }
     var buttonList = document.createElement("button");
     buttonList.textContent = history;
@@ -135,14 +121,6 @@ function writeList() {
 
 //listening for buttons inside of div
 var savedHistoryDiv = document.getElementById("saved-history")
-// savedHistoryDiv.addEventListener("click", function (event) {
-//     var userWrite = event.target.textContent;
-//     console.log(userWrite);
-//     getApiData();
-
-// })
-
-
 
 savedHistoryDiv.addEventListener("click", function (event) {
     var pushedButton = event.target.textContent;
@@ -205,7 +183,6 @@ function getApiData() {
             weatherIcon.src = iconURL;
             getUvindex();
         })
-    // writeList();
 }//end of getApiData function
 
 
@@ -221,7 +198,7 @@ function getUvindex() {
             return response.json();
         })
         .then(function (data) {
-            console.log(data);
+            var dataObj = data;
             currentUv.textContent = "UV index " + data.current.uvi;
             console
             if (data.current.uvi <= 2) {
@@ -231,51 +208,51 @@ function getUvindex() {
             } else {
                 currentUv.className = "list-group-item list-group-item-danger"
             }
-
-
-            for (var i = 1; i < 6; i++) {
-                //https://www.w3schools.com/js/js_dates.asp quick link for date
-
-                var newDay = new Date(data.daily[i].dt * 1000);
-                newDay = newDay.toLocaleDateString("en-US");
-                // var fiveDay = document.getElementById("five-day");
-                //create card
-                var oneDay = document.createElement("div");
-                //writing index date
-                oneDay.className = "card col-2 text-white bg-primary text-center";
-                var forDay = document.createElement('p');
-                forDay.className = "card-text text-center";
-                forDay.textContent = newDay;
-                //adding icon
-                var image = document.createElement('img');
-                var iconCode = data.daily[i].weather[0].icon;
-                var iconURL = "https://openweathermap.org/img/w/" + iconCode + ".png";
-                image.src = iconURL;
-                //Descrition
-                var desc = document.createElement('p');
-                desc.textContent = data.daily[i].weather[0].description;
-                //Changed variable to include both max and min temps
-                var maxMinTemp = document.createElement('p');
-                maxMinTemp.textContent = "High: " + Math.round(data.daily[i].temp.max) + "F" + "  Low: " + Math.round(data.daily[i].temp.min) + "F";
-                //humidity
-                var humid = document.createElement('p');
-                humid.textContent = "Humidty " + data.daily[i].humidity + "%";
-                //wind speed
-                var windS = document.createElement('p');
-                windS.textContent = "Wind " + Math.round(data.daily[i].wind_speed) + " MPH";
-
-
-                oneDay.appendChild(forDay);
-                oneDay.appendChild(image);
-                oneDay.appendChild(desc);
-                oneDay.appendChild(maxMinTemp);
-                oneDay.appendChild(humid);
-                oneDay.appendChild(windS);
-                fiveDay.appendChild(oneDay);
-
-            }
+            fiveDayForecast(dataObj);
         })
+}
+//creating and writing the 5 day forecast to the page
+function fiveDayForecast(da) {
+    var data = da;
+    for (var i = 1; i < 6; i++) {
+        //https://www.w3schools.com/js/js_dates.asp quick link for date
+
+        var newDay = new Date(data.daily[i].dt * 1000);
+        newDay = newDay.toLocaleDateString("en-US");
+        //create card
+        var oneDay = document.createElement("div");
+        //writing index date
+        oneDay.className = "card col-2 text-white bg-primary text-center";
+        var forDay = document.createElement('p');
+        forDay.className = "card-text text-center";
+        forDay.textContent = newDay;
+        //adding icon
+        var image = document.createElement('img');
+        var iconCode = data.daily[i].weather[0].icon;
+        var iconURL = "https://openweathermap.org/img/w/" + iconCode + ".png";
+        image.src = iconURL;
+        //Descrition
+        var desc = document.createElement('p');
+        desc.textContent = data.daily[i].weather[0].description;
+        //Changed variable to include both max and min temps
+        var maxMinTemp = document.createElement('p');
+        maxMinTemp.textContent = "High: " + Math.round(data.daily[i].temp.max) + "F" + "  Low: " + Math.round(data.daily[i].temp.min) + "F";
+        //humidity
+        var humid = document.createElement('p');
+        humid.textContent = "Humidty " + data.daily[i].humidity + "%";
+        //wind speed
+        var windS = document.createElement('p');
+        windS.textContent = "Wind " + Math.round(data.daily[i].wind_speed) + " MPH";
+
+
+        oneDay.appendChild(forDay);
+        oneDay.appendChild(image);
+        oneDay.appendChild(desc);
+        oneDay.appendChild(maxMinTemp);
+        oneDay.appendChild(humid);
+        oneDay.appendChild(windS);
+        fiveDay.appendChild(oneDay);
+    }
 }
 
 getSaved();
-;
