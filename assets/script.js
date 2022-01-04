@@ -14,9 +14,7 @@ var citySearch = [];
 var userWrite = "";
 var weatherIcon = document.getElementById("icon")
 var fiveDay = document.getElementById("five-day");
-
-//TODO: find a way to only save one of each city even when multiple are displayed
-//TODO: clear or delete button
+var savedHistoryDiv = document.getElementById("saved-history")
 
 
 // checking local storage and then writing on page
@@ -25,7 +23,6 @@ function getSaved() {
         citySearch = JSON.parse(localStorage.getItem("Search"))
         //grabs last searched item
         userWrite = citySearch[citySearch.length - 1];
-        console.log(userWrite);
         //displaying last searched city on page
         getApiData(userWrite);
         loopCity(0);
@@ -45,7 +42,6 @@ function getSaved() {
 function removeLoadCity() {
     if (JSON.parse(localStorage.getItem("Search"))) {
         localStorage.getItem("Load");
-        console.log("Load")
         localStorage.removeItem("Load");
     }
 }
@@ -72,15 +68,9 @@ button.addEventListener("click", function () {
         alert("You must enter in a valid city!")
         return;
     }
-    // else if (citySearch.includes(userInput.value)) {
-    //     //TODO:want to add push to top of list
-    //     return;
-
-    // }
     else if (citySearch.length >= 5) {
         citySearch.shift()
         citySearch.push(userWrite)
-        //if empty string error message, need to find a way to not push strings to array
         historyList.removeChild(historyList.childNodes[4]);
         localStorage.setItem("Search", JSON.stringify(citySearch));
 
@@ -89,6 +79,7 @@ button.addEventListener("click", function () {
         console.log(citySearch)
         citySearch.push(userWrite)
         localStorage.setItem("Search", JSON.stringify(citySearch));
+
     }
 
     getApiData(userWrite);
@@ -119,7 +110,6 @@ function writeList() {
 
 
 //listening for buttons inside of div
-var savedHistoryDiv = document.getElementById("saved-history")
 
 savedHistoryDiv.addEventListener("click", function (event) {
     var pushedButton = event.target.textContent;
@@ -177,7 +167,6 @@ function getUvindex() {
         .then(function (data) {
             var dataObj = data;
             currentUv.textContent = "UV index " + data.current.uvi;
-            console
             if (data.current.uvi <= 2) {
                 currentUv.className = "list-group-item list-group-item-success"
             } else if (data.current.uvi > 2 && data.current.uvi <= 5) {
